@@ -24,6 +24,10 @@ import static com.vizzuality.hadoop.hive.MercatorProjectionUtil.TILE_SIZE;
 import static com.vizzuality.hadoop.hive.MercatorProjectionUtil.isPlottable;
 import static com.vizzuality.hadoop.hive.MercatorProjectionUtil.toNormalisedPixelCoords;
 
+/**
+ * A UDTF that projects a latitude and longitude to mercator, generating a row of zoom, tileX, tileY, pixelX and pixelY
+ * for each zoom level up to the configured maximum.  This allows you to efficiently group by pixel at any zoom
+ */
 public class MercatorTilesUDTF extends GenericUDTF {
 
   private static final String[] FIELD_NAMES = {"zoom", "tile_x", "tile_y", "pixel_x", "pixel_y"};
@@ -43,7 +47,7 @@ public class MercatorTilesUDTF extends GenericUDTF {
 
   private boolean firstRun = true;
 
-  private int maxZoom = 23;
+  private int maxZoom = 23; // inclusive!
 
   @Override
   public StructObjectInspector initialize(StructObjectInspector argOI) throws UDFArgumentException {

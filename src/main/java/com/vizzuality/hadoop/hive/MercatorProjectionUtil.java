@@ -34,35 +34,4 @@ class MercatorProjectionUtil {
     lat = 0.5 - ((Math.log(Math.tan((Math.PI / 4) + ((0.5 * Math.PI * lat) / 180))) / Math.PI) / 2.0);
     return new Point2D.Double(lng, lat);
   }
-
-
-  private void test() {
-
-    double lat = 0 , lng = 0;
-    int maxZoom = 23;
-
-    if (isPlottable(lat, lng)) {
-      Point2D normalizedPixels = toNormalisedPixelCoords(lat, lng);
-
-      for (int z= 0; z<=maxZoom; z++) {
-        int scale = 1 << z;
-
-        // truncating to int removes the fractional pixel offset
-        int tileX = (int) normalizedPixels.getX() * scale;
-        int tileY = (int) normalizedPixels.getY() * scale;
-
-        double x = normalizedPixels.getX();
-        x *= scale * TILE_SIZE;
-        int pixelX = (int) x % TILE_SIZE;
-
-        double y = normalizedPixels.getY();
-        y *= scale * TILE_SIZE;
-        int pixelY = (int) y - TILE_SIZE * tileY;
-
-        // emit(z, tileX, tileY, pixelX, pixelY)
-      }
-    }
-  }
-
-
 }
